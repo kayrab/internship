@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:font-family="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>SUMC</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+   <script>
+      $(document).ready( function () {
+       var mytable = $('#stops').DataTable({
+        paging: false,
+        ordering: false,
+        info: false,
+        searching: false
+       });
+
+       $("#line").selectmenu({
+        change : function(event, ui) {
+            $.ajax({
+                url: "/line/stops/" + ui.item.value + "/1",
+                type: "GET",
+                dataType: "json",
+                success: function(data){
+                    console.log(data);
+                    table_data = []
+                    data['lines'].forEach(row => {
+                        row_data = []
+                        row_data.push(row['Stop']);
+                        table_data.push(row_data);
+                    });
+                    console.log(table_data);
+                    mytable.rows().clear().draw();
+                    mytable.rows.add(table_data).draw();
+
+                },
+                error: function(error){
+                     console.log("Error:");
+                     console.log(error);
+                }
+            });
+        }
+      });
+     });
+     $( function() {
+       $( "#stop_name" ).selectmenu();
+     } );
+   </script>
+    <style>
+        /* styling navlist */
+        #navlist {
+            background-color: #39b54a;
+            position: absolute;
+            width: 100%;
+            margin:0
+        }
+
+         /* styling navlist anchor element */
+        #navlist a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        .navlist-right{
+            float:right;
+        }
+
+        /* hover effect of navlist anchor element*/
+        #navlist a:hover {
+            color: #006837;
+        }
+
+        /* styling search bar */
+        .search input[type=text]{
+            width:300px;
+            height:25px;
+            border-radius:25px;
+            border: none;
+        }
+
+        .search{
+            float:right;
+            margin:7px;
+        }
+
+        .search button{
+            background-color: #39b54a;
+            color: #ffffff;
+            float: right;
+            padding: 5px 10px;
+            margin-right: 16px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+  <!-- Navbar items -->
+    <div id="navlist">
+        <a href="#" style = "font-family: Comfortaa" >Начало</a>
+        <a href="#"  style = "font-family: Comfortaa">За нас</a>
+        <a href="#"  style = "font-family: Comfortaa">Контакти</a>
+
+        <!-- search bar right align -->
+        <div class="search">
+
+            <form action="#">
+                <input type="text"
+                        style = "font-family: Comfortaa"
+                    placeholder=" Търси... "
+                    name="search">
+                <button>
+                    <i class="fa fa-search"
+                        style="font-size: 18px;">
+                    </i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- logo with tag -->
+    <div class="content">
+        <h1 style="color:#006837; padding-top:100px; font-family: Comfortaa">
+            Изберете желана линия или спирка
+        </h1>
+    </div>
+
+  <br><b><label for="line" style = "font-family: Comfortaa; color:#006837; font-size: 25px">Линии</label></b></br>
+  <br><select name="line" id="line">
+      {% for line in lines %}
+        <option value="{{line.id}}">{{line.line}}</option>
+      {% endfor %}
+  </select></br>
+
+  <br><b><label for="stop_name" style = "font-family: Comfortaa; color:#006837; font-size: 25px">Спирки</label></b></br>
+  <br><select name="stop_name" id="stop_name">
+      {% for stop in stops %}
+        <option value="{{stop.id}}">{{stop.stop_name}}</option>
+      {% endfor %}
+  </select></br>
+
+<table id="stops" class="display" style="width:100%; padding-top:50px">
+    <thead>
+        <tr>
+            <th style = "font-family: Comfortaa">Линии</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in lines %}
+        <TR>
+            <TD class="c2">{{line.line}}</TD>
+        </TR>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
