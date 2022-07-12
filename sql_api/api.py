@@ -59,7 +59,7 @@ async def lines():
 async def read_item(line_id: int, way: bool):
     conn = pyodbc.connect(sql_server)
     cursor = conn.cursor()
-    cursor.execute(' SELECT Lines.Type, Lines.line_num, Stops.name, Time.time ' +
+    cursor.execute(' SELECT Lines.Type, Lines.line_num, Stops.name' +
 ' FROM Lines ' +
 ' LEFT JOIN Line_Stop ls ON Lines.id = ls.line_id ' +
 ' LEFT JOIN Stops ON ls.stop_id = Stops.id ' +
@@ -67,10 +67,10 @@ async def read_item(line_id: int, way: bool):
 ' LEFT JOIN Schedule ON Schedule.line_id = Lines.id AND Schedule.way_id = Way.id ' +
 ' LEFT JOIN Time ON Time.schedule_id = Schedule.id ' +
 ' WHERE Lines.id= ' + str(line_id) + 'AND Way.way = ' + str(int(way)) + '' +
-' GROUP BY Lines.id, Lines.Type, Lines.line_num, Stops.name, Time.time')
+' GROUP BY Lines.id, Lines.Type, Lines.line_num, Stops.name')
     data = []
     for row in cursor:
-        data.append({'Type': str(row[0]), 'Line': int(row[1]), 'Stop': str(row[2]), 'Time': str(row[2])})
+        data.append({'Type': str(row[0]), 'Line': int(row[1]), 'Stop': str(row[2])})
     return {'lines': data}
 
 @app.put("/lines", response_model=Line)
