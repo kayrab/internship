@@ -1,19 +1,17 @@
 USE [Sofia Airport]
 GO
 
-/****** Object:  Table [dbo].[Planes]    Script Date: 14/07/2022 15:58:31 ******/
+/****** Object:  Table [dbo].[Company]    Script Date: 14/07/2022 15:57:20 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Planes](
+CREATE TABLE [dbo].[Company](
 	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[Type] [varchar](50) NOT NULL,
-	[Number] [int] NOT NULL,
-	[Seats] [int] NOT NULL,
- CONSTRAINT [PK_Planes] PRIMARY KEY CLUSTERED 
+	[Name] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]

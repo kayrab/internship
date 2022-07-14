@@ -1,7 +1,7 @@
 USE [Sofia Airport]
 GO
 
-/****** Object:  Table [dbo].[Direction]    Script Date: 12/07/2022 15:22:53 ******/
+/****** Object:  Table [dbo].[Direction]    Script Date: 14/07/2022 15:57:57 ******/
 SET ANSI_NULLS ON
 GO
 
